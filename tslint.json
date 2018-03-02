@@ -1,0 +1,16 @@
+{
+  "extends": ["tslint:latest", "tslint-config-prettier"],
+  "rules": {
+    "arrow-parens": false,
+    "quotemark": [true, "single"],
+    "ordered-imports": [false],
+    "max-line-length": [true, 140],
+    "max-classes-per-file": [false],
+    "no-console": false,
+    "object-literal-sort-keys": [false],
+    "no-submodule-imports": {
+      "options": ["firebase", "lodash", "rxjs"]
+    },
+    "no-implicit-dependencies": false
+  }
+}

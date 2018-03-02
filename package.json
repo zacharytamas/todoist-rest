@@ -1,0 +1,16 @@
+{
+  "name": "scratch-boilerplate",
+  "version": "1.0.0",
+  "description": "Boilerplate code for scratch projects.",
+  "main": "index.js",
+  "repository": "https://zacharytamas@github.com/zacharytamas/scratch-boilerplate.git",
+  "author": "Zachary Jones <zachary.tamas.cc>",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^1.11.1",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.9.0",
+    "typescript": "^2.7.2"
+  }
+}
