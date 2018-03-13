@@ -1,16 +1,25 @@
 {
   "extends": ["tslint:latest", "tslint-config-prettier"],
   "rules": {
+    "align": [true],
     "arrow-parens": false,
-    "quotemark": [true, "single"],
-    "ordered-imports": [false],
-    "max-line-length": [true, 140],
+    "arrow-return-shorthand": [true, "multiline"],
+    "await-promise": [true],
+    "interface-name": [true, "always-prefix"],
+    "interface-over-type-literal": [true],
     "max-classes-per-file": [false],
-    "no-console": false,
-    "object-literal-sort-keys": [false],
-    "no-submodule-imports": {
-      "options": ["firebase", "lodash", "rxjs"]
-    },
-    "no-implicit-dependencies": false
+    "max-line-length": [true, 140],
+    "member-access": [false],
+    "no-consecutive-blank-lines": [true],
+    "no-console": [false],
+    "no-duplicate-variable": [true, "check-parameters"],
+    "no-empty-interface": [false],
+    "no-implicit-dependencies": [false],
+    "no-magic-numbers": [true],
+    "no-return-await": [true],
+    "ordered-imports": [false],
+    "prefer-object-spread": [true],
+    "prefer-template": [true, "allow-single-concat"],
+    "promise-function-async": [true]
   }
 }
