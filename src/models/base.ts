@@ -1,40 +1,29 @@
 import { TodoistClient } from '../client';
 import { TodoistAPIHttpStatus } from '../api-config';
 
-export abstract class Model<T> {
+export abstract class Model<T, U> {
   protected abstract apiUrl: string;
 
-  protected object: T;
+  protected original: T;
   protected client: TodoistClient;
 
   constructor({ raw, client }) {
-    this.object = raw;
     this.client = client;
+    this.original = raw;
+    Object.entries(raw).forEach(([k, v]) => (this[k] = v));
   }
 
   toJSON() {
-    return this.object;
-  }
-
-  get(key: keyof T) {
-    return this.object[key];
-  }
-
-  set(key: keyof T, value: any) {
-    this.object[key] = value;
+    return this.toUpdateSerialized();
   }
 
   /**
    * Update this object in Todoist with local changes.
    */
-  async save() {
-    // FIXME This sends the entire object including the read-only fields that
-    // are ignored by the Todoist API. Thus, this uses more network than
-    // necessary.
-
-    await this.client.makeRequest({
+  save() {
+    return this.client.makeRequest({
       request: {
-        data: this.object,
+        data: this.toUpdateSerialized(),
         headers: { 'Content-Type': 'application/json' },
         method: 'post',
         url: this.apiUrl
@@ -52,4 +41,6 @@ export abstract class Model<T> {
       successCode: TodoistAPIHttpStatus.NoContent
     });
   }
+
+  protected abstract toUpdateSerialized(): U;
 }

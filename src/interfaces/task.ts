@@ -27,7 +27,7 @@ export interface ITaskDue {
 /**
  * A Todoist Task.
  */
-export interface ITask {
+export interface ITaskSerialized {
   /** Number of task comments. */
   readonly comment_count: number;
   /** Flag to mark completed tasks. */
@@ -35,7 +35,7 @@ export interface ITask {
   /** Task content. */
   content: string;
   /** Object representing task due date/time. */
-  due: ITaskDue;
+  due?: ITaskDue;
   /** Task id. */
   readonly id: number;
   /** Task indentation level from 1 to 5 (read-only). */

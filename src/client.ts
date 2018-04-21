@@ -44,6 +44,6 @@ export class TodoistClient {
       return response;
     }
 
-    throw Error(`${response.status}: ${response.statusText}. ${response.data}`);
+    throw Error(`${response.status}: ${response.statusText}.`);
   }
 }

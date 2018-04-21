@@ -1,9 +1,9 @@
 /**
  * A Todoist Label.
  */
-export interface ILabel {
+export interface ILabelSerialized {
   /** Label id. */
-  id: number;
+  readonly id: number;
   /** Label name. */
   name: string;
   /** Number used by clients to sort list of labels. */

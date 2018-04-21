@@ -4,6 +4,7 @@ export const API_BASE_URL = `https://${API_HOST}${API_ROOT}`;
 
 export const API_KIND_ROOT = {
   Label: `/labels`,
+  Project: `/projects`,
   Task: `/tasks`
 };
 

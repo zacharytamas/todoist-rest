@@ -1,49 +1,30 @@
-import { ILabel, ILabelCreate } from '../interfaces';
-import { Model } from './base';
-import { Manager, ManagerQuery, IManagerRequestBundle } from './manager';
-import { AxiosRequestConfig } from 'axios';
 import { API_KIND_ROOT } from '../api-config';
-
-const apiUrlForLabelWithId = (id: number | string) =>
-  `${API_KIND_ROOT.Label}/${id}`;
+import { ILabelCreate, ILabelSerialized, ILabelUpdate } from '../interfaces';
+import { Model } from './base';
+import { Manager } from './manager';
 
 export class LabelManager extends Manager<Label, ILabelCreate> {
   modelClass = Label;
-
-  protected requestFor(
-    type: ManagerQuery,
-    config: IManagerRequestBundle = {}
-  ): AxiosRequestConfig {
-    const base = { method: 'get', url: API_KIND_ROOT.Label };
-
-    switch (type) {
-      case ManagerQuery.all:
-        return { ...base };
-      case ManagerQuery.getById:
-        const { id } = config;
-        return { ...base, url: apiUrlForLabelWithId(id) };
-      case ManagerQuery.filter:
-        // TODO It would probably be helpful to just do this locally by fetching
-        // all of them and then doing a linear search.
-        throw Error('Labels cannot be filtered directly from the API.');
-      case ManagerQuery.create:
-        const { requestConfig } = config;
-        return {
-          ...requestConfig,
-          ...base,
-          data: JSON.stringify(requestConfig.data),
-          headers: { 'Content-Type': 'application/json' },
-          method: 'post'
-        };
-    }
-  }
+  urlBase = API_KIND_ROOT.Label;
 }
 
 /**
  * A Todoist label object.
  */
-export class Label extends Model<ILabel> {
+export class Label extends Model<ILabelSerialized, ILabelUpdate>
+  implements ILabelSerialized {
+  /** Label id. */
+  readonly id: number;
+  /** Label name. */
+  name: string;
+  /** Number used by clients to sort list of labels. */
+  order: number;
+
   protected get apiUrl() {
-    return apiUrlForLabelWithId(this.get('id') as number);
+    return `${API_KIND_ROOT.Label}/${this.id}`;
+  }
+
+  protected toUpdateSerialized() {
+    return { name: this.name, order: this.order };
   }
 }
