@@ -10,7 +10,7 @@ export class TaskManager extends Manager<Task, ITaskQuery, ITaskCreate> {
     type: ManagerQuery,
     config: Partial<AxiosRequestConfig> = {}
   ): AxiosRequestConfig {
-    const base = { method: 'get', url: 'tasks' };
+    const base = { method: 'get', url: '/tasks' };
 
     switch (type) {
       case ManagerQuery.all:
