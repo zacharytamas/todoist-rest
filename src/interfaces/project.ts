@@ -3,9 +3,9 @@
 /**
  * A Todoist Project.
  */
-export interface IProject {
+export interface IProjectSerialized {
   /** Number of project comments. */
-  comment_count: number;
+  readonly comment_count: number;
   /** Project id. */
   readonly id: number;
   /** Value from 1 to 4 for the Project indentation level (read-only). */
@@ -17,7 +17,9 @@ export interface IProject {
 }
 
 /** The payload shape for creating/updating a Project. */
-export interface IProjectMutation {
+export interface IProjectCreate {
   /** Name of the project. */
   name: string;
 }
+
+export interface IProjectUpdate extends IProjectCreate {}

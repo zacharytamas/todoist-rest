@@ -1,4 +1,4 @@
-import { ITask, IProject } from '.';
+import { ITaskSerialized, IProject } from '.';
 
 /**
  * A Todoist Comment.
@@ -22,19 +22,19 @@ export interface IComment {
   /** Comment’s project id (for project comments). */
   project_id?: IProject['id'];
   /** Comment’s task id (for task comments). */
-  task_id?: ITask['id'];
+  task_id?: ITaskSerialized['id'];
 }
 
 export interface ICommentQuery {
   /** Id of the project used to filter comments. */
   project_id?: IProject['id'];
   /** Id of the task used to filter comments. */
-  task_id?: ITask['id'];
+  task_id?: ITaskSerialized['id'];
 }
 
 export interface ICommentCreate {
   /** Comment’s task id (for task comments). */
-  task_id?: ITask['id'];
+  task_id?: ITaskSerialized['id'];
   /** Comment’s project id (for project comments). */
   project_id?: IProject['id'];
   /** Comment content. */

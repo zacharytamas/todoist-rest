@@ -1,30 +1,39 @@
-import { Manager, ManagerQuery } from './manager';
-import { ITask, ITaskQuery, ITaskCreate } from '../interfaces/task';
+// tslint:disable:variable-name
+
+import { Manager, ManagerQuery, IManagerRequestBundle } from './manager';
+import {
+  ITaskSerialized,
+  ITaskQuery,
+  ITaskCreate,
+  ITaskUpdate,
+  ITaskDue
+} from '../interfaces/task';
 import { Model } from './base';
 import { AxiosRequestConfig } from 'axios';
+import { API_KIND_ROOT, TodoistAPIHttpStatus } from '../api-config';
+import { Label } from './label';
 
-export class TaskManager extends Manager<Task, ITaskQuery, ITaskCreate> {
+export class TaskManager extends Manager<Task, ITaskCreate> {
   modelClass = Task;
+  urlBase = API_KIND_ROOT.Task;
+
+  async filter(query: ITaskQuery): Promise<Task[]> {
+    return this.query(
+      this.requestFor(ManagerQuery.filter, { requestConfig: { params: query } })
+    );
+  }
 
   protected requestFor(
     type: ManagerQuery,
-    config: Partial<AxiosRequestConfig> = {}
+    config: IManagerRequestBundle = {}
   ): AxiosRequestConfig {
-    const base = { method: 'get', url: 'tasks' };
+    const base = { method: 'get', url: this.urlBase };
 
     switch (type) {
-      case ManagerQuery.all:
-        return { ...base };
       case ManagerQuery.filter:
-        return { ...config, ...base };
-      case ManagerQuery.create:
-        return {
-          ...config,
-          ...base,
-          data: JSON.stringify(config.data),
-          headers: { 'Content-Type': 'application/json' },
-          method: 'post'
-        };
+        return { ...config.requestConfig, ...base };
+      default:
+        return super.requestFor(type, config);
     }
   }
 }
@@ -32,10 +41,76 @@ export class TaskManager extends Manager<Task, ITaskQuery, ITaskCreate> {
 /**
  * A Todoist task object.
  */
-export class Task extends Model<ITask> {
-  // getLabels()
-  // addLabel()
-  // removeLabel()
-  // complete()
-  // uncomplete()
+export class Task extends Model<ITaskSerialized, ITaskUpdate>
+  implements ITaskSerialized {
+  // The following properties are from the ITaskSerialized interface, which
+  // matches the Todoist API's response shape.
+  readonly comment_count: number;
+  readonly completed: boolean;
+  content: string;
+  due?: ITaskDue;
+  readonly id: number;
+  readonly indent: ITaskSerialized['indent'];
+  label_ids: number[] = [];
+  readonly order: number;
+  priority: ITaskSerialized['priority'];
+  readonly project_id: number;
+  readonly url: string;
+
+  /**
+   * 2-letter code specifying language in case `due_string` is not written in
+   * English.
+   */
+  due_lang: string;
+
+  protected get apiUrl() {
+    return `${API_KIND_ROOT.Task}/${this.id}`;
+  }
+
+  toUpdateSerialized() {
+    return {
+      ...{
+        content: this.content,
+        label_ids: this.label_ids,
+        priority: this.priority,
+        project_id: this.project_id
+      },
+      ...(this.due
+        ? {
+            due_date: this.due.date,
+            due_datetime: this.due.datetime,
+            due_lang: this.due_lang,
+            due_string: this.due.string
+          }
+        : null)
+    };
+  }
+
+  addLabel(label: Label) {
+    this.label_ids = [...this.label_ids, label.id];
+  }
+
+  removeLabel(label: Label) {
+    this.label_ids = this.label_ids.filter(id => id !== label.id);
+  }
+
+  /**
+   * Complete this task.
+   */
+  async complete() {
+    await this.client.makeRequest({
+      request: { method: 'post', url: this.apiUrl + '/close' },
+      successCode: TodoistAPIHttpStatus.NoContent
+    });
+  }
+
+  /**
+   * Re-open this Task if it was previously completed.
+   */
+  uncomplete() {
+    return this.client.makeRequest({
+      request: { method: 'post', url: this.apiUrl + '/reopen' },
+      successCode: TodoistAPIHttpStatus.NoContent
+    });
+  }
 }
