@@ -4,10 +4,16 @@ import { AxiosRequestConfig } from 'axios';
 export enum ManagerQuery {
   all,
   filter,
-  create
+  create,
+  getById
 }
 
-export abstract class Manager<ModelClass, IQuery, ICreate> {
+export interface IManagerRequestBundle {
+  id?: string | number;
+  requestConfig?: AxiosRequestConfig;
+}
+
+export abstract class Manager<ModelClass, ICreate> {
   protected client: TodoistClient;
   protected abstract modelClass: any;
 
@@ -15,18 +21,22 @@ export abstract class Manager<ModelClass, IQuery, ICreate> {
     this.client = client;
   }
 
-  async all(): Promise<ModelClass[]> {
-    return this.query(this.requestFor(ManagerQuery.all));
+  async getById(id: IManagerRequestBundle['id']): Promise<ModelClass> {
+    const request = this.requestFor(ManagerQuery.getById, { id });
+    const response = await this.client.makeRequest({ request });
+    return this.inflate(response.data);
   }
 
-  async filter(query: IQuery): Promise<ModelClass[]> {
-    return this.query(this.requestFor(ManagerQuery.filter, { params: query }));
+  async all(): Promise<ModelClass[]> {
+    return this.query(this.requestFor(ManagerQuery.all));
   }
 
   async create(data: ICreate): Promise<ModelClass> {
     return this.inflate(
       (await this.client.makeRequest({
-        request: this.requestFor(ManagerQuery.create, { data })
+        request: this.requestFor(ManagerQuery.create, {
+          requestConfig: { data }
+        })
       })).data
     );
   }
@@ -37,12 +47,11 @@ export abstract class Manager<ModelClass, IQuery, ICreate> {
 
   protected abstract requestFor(
     type: ManagerQuery,
-    config?: Partial<AxiosRequestConfig>
+    config?: IManagerRequestBundle
   ): AxiosRequestConfig;
 
   protected async query(request: AxiosRequestConfig): Promise<ModelClass[]> {
-    return (await this.client.makeRequest({ request })).data.map(m =>
-      this.inflate(m)
-    );
+    const response = await this.client.makeRequest({ request });
+    return response.data.map(m => this.inflate(m));
   }
 }

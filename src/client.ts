@@ -1,6 +1,7 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { API_BASE_URL, TodoistAPIHttpStatus } from './api-config';
 import { TaskManager } from '.';
+import { LabelManager } from './models/label';
 
 interface ITodoistClientConfig {
   token: string;
@@ -16,6 +17,7 @@ interface ITodoistClientRequest {
  */
 export class TodoistClient {
   public tasks = new TaskManager(this);
+  public labels = new LabelManager(this);
 
   private token: string;
   private axios: AxiosInstance;
@@ -42,6 +44,6 @@ export class TodoistClient {
       return response;
     }
 
-    throw Error(`${response.status}: ${response.statusText}`);
+    throw Error(`${response.status}: ${response.statusText}. ${response.data}`);
   }
 }
