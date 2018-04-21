@@ -41,6 +41,8 @@ export abstract class Manager<ModelClass, IQuery, ICreate> {
   ): AxiosRequestConfig;
 
   protected async query(request: AxiosRequestConfig): Promise<ModelClass[]> {
-    return (await this.client.makeRequest({ request })).data.map(this.inflate);
+    return (await this.client.makeRequest({ request })).data.map(m =>
+      this.inflate(m)
+    );
   }
 }
