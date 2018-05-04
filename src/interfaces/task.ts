@@ -10,16 +10,16 @@ export interface ITaskDue {
   date: string;
   recurring: boolean;
   /**
-   * Only returned if exact due time set (i.e. it’s not a whole-day task), date
-   * and time in RFC3339 format in UTC.
+   * Only returned if exact due time set (i.e. it’s not a whole-day task),
+   * date and time in RFC3339 format in UTC.
    */
   datetime?: string;
   /** Human defined date in arbitrary format. */
   string: string;
   /**
-   * Only returned if exact due time set, user’s timezone definition either in
-   * tzdata-compatible format (“Europe/Berlin”) or as a string specifying east
-   * of UTC offset as “UTC±HH:MM” (i.e. “UTC-01:00”).
+   * Only returned if exact due time set, user’s timezone definition either
+   * in tzdata-compatible format (“Europe/Berlin”) or as a string
+   * specifying east of UTC offset as “UTC±HH:MM” (i.e. “UTC-01:00”).
    */
   timezone?: string;
 }
@@ -66,8 +66,8 @@ export interface ITaskQuery {
    */
   filter?: string;
   /**
-   * IETF language tag defining what language filter is written in, if differs
-   * from default English.
+   * IETF language tag defining what language filter is written in, if
+   * differs from default English.
    */
   lang?: string;
 }
@@ -80,15 +80,18 @@ export interface ITaskCreate {
   content: string;
   /** Task project id. If not set, task is put to user’s Inbox. */
   project_id?: number;
-  /** Non-zero integer value used by clients to sort tasks inside project. */
+  /**
+   * Non-zero integer value used by clients to sort tasks inside project.
+   */
   order?: number;
   /** Ids of labels associated with the task. */
   label_ids?: number[];
   /** Task priority from 1 (normal) to 4 (urgent). */
   priority?: TodoistTaskPriority;
   /**
-   * [Human defined](https://todoist.com/Help/DatesTimes) task due date (ex.:
-   * “next Monday”, “Tomorrow”). Value is set using local (not UTC) time.
+   * [Human defined](https://todoist.com/Help/DatesTimes) task due date
+   * (ex.: “next Monday”, “Tomorrow”). Value is set using local (not UTC)
+   * time.
    */
   due_string?: string;
   /** Specific date in `YYYY-MM-DD` format relative to user’s timezone. */
@@ -96,8 +99,8 @@ export interface ITaskCreate {
   /** Specific date and time in RFC3339 format in UTC. */
   due_datetime?: string;
   /**
-   * 2-letter code specifying language in case `due_string` is not written in
-   * English.
+   * 2-letter code specifying language in case `due_string` is not written
+   * in English.
    */
   due_lang?: string;
 }
@@ -112,8 +115,9 @@ export interface ITaskUpdate {
   /** Task priority from 1 (normal) to 4 (urgent). */
   priority?: TodoistTaskPriority;
   /**
-   * [Human defined](https://todoist.com/Help/DatesTimes) task due date (ex.:
-   * “next Monday”, “Tomorrow”). Value is set using local (not UTC) time.
+   * [Human defined](https://todoist.com/Help/DatesTimes) task due date
+   * (ex.: “next Monday”, “Tomorrow”). Value is set using local (not UTC)
+   * time.
    */
   due_string?: string;
   /** Specific date in `YYYY-MM-DD` format relative to user’s timezone. */
@@ -121,8 +125,8 @@ export interface ITaskUpdate {
   /** Specific date and time in RFC3339 format in UTC. */
   due_datetime?: string;
   /**
-   * 2-letter code specifying language in case `due_string` is not written in
-   * English.
+   * 2-letter code specifying language in case `due_string` is not written
+   * in English.
    */
   due_lang?: string;
 }

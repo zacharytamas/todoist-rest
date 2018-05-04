@@ -1,6 +1,6 @@
 import Axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { API_BASE_URL, TodoistAPIHttpStatus } from './api-config';
 import { TaskManager } from '.';
+import { API_BASE_URL, TodoistAPIHttpStatus } from './api-config';
 import { LabelManager } from './models/label';
 
 interface ITodoistClientConfig {
