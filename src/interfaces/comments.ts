@@ -1,4 +1,4 @@
-import { ITaskSerialized, IProjectSerialized } from '.';
+import { IProjectSerialized, ITaskSerialized } from '.';
 
 /**
  * A Todoist Comment.

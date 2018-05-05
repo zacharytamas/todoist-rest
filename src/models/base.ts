@@ -1,5 +1,5 @@
-import { TodoistClient } from '../client';
 import { TodoistAPIHttpStatus } from '../api-config';
+import { TodoistClient } from '../client';
 
 export abstract class Model<T, U> {
   protected abstract apiUrl: string;

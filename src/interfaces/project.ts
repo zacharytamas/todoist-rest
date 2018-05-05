@@ -12,7 +12,9 @@ export interface IProjectSerialized {
   readonly indent: 1 | 2 | 3 | 4;
   /** Project name. */
   name: string;
-  /** Project position in the list of projects/Project order (read-only). */
+  /**
+   * Project position in the list of projects/Project order (read-only).
+   */
   readonly order: number;
 }
 

@@ -20,6 +20,10 @@ export class Label extends Model<ILabelSerialized, ILabelUpdate>
   /** Number used by clients to sort list of labels. */
   order: number;
 
+  get filterName() {
+    return `@${this.name}`;
+  }
+
   protected get apiUrl() {
     return `${API_KIND_ROOT.Label}/${this.id}`;
   }

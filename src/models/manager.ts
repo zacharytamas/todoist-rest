@@ -1,5 +1,5 @@
-import { TodoistClient } from '../client';
 import { AxiosRequestConfig } from 'axios';
+import { TodoistClient } from '../client';
 
 export enum ManagerQuery {
   all,
@@ -65,8 +65,8 @@ export abstract class Manager<ModelClass, ICreate> {
           method: 'post'
         };
       case ManagerQuery.filter:
-        // TODO It would probably be helpful to just do this locally by fetching
-        // all of them and then doing a linear search.
+        // TODO It would probably be helpful to just do this locally by
+        // fetching all of them and then doing a linear search.
         throw Error(
           'Todoist API does not provide filtering for this type of object.'
         );
